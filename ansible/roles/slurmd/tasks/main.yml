@@ -1,0 +1,31 @@
+---
+
+- name: install slurmd
+  apt:
+    name: slurmd
+    state: present
+    force_apt_get: true
+
+- name: install slurmd configuration
+  template:
+    src: slurm.conf.j2
+    dest: /etc/slurm-llnl/slurm.conf
+  register: slurmd_config
+
+- name: install cgroup configuration
+  template:
+    src: cgroup.conf.j2
+    dest: /etc/slurm-llnl/cgroup.conf
+  register: cgroup_config
+
+- name: restart slurmd
+  service:
+    name: slurmd
+    state: restarted
+  when: slurmd_config.changed or cgroup_config.changed
+
+- name: enable slurmd
+  service:
+    name: slurmd
+    enabled: true
+    state: started

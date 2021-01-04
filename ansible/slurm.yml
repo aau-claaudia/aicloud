@@ -1,0 +1,23 @@
+---
+
+- name: common configuration for all hosts
+  hosts: all
+  remote_user: root
+
+  roles:
+    - munge
+    - { name: hosts, tags: hosts }
+
+- name: execute nodes
+  hosts: exec
+  remote_user: root
+
+  roles:
+    - { name: slurmd, tags: slurmd }
+
+- name: controller nodes
+  hosts: controller
+  remote_user: root
+
+  roles:
+    - { name: slurmctld, tags: slurmctld }

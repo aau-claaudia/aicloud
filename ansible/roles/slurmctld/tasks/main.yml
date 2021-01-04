@@ -1,0 +1,32 @@
+---
+
+- name: install slurmctld
+  apt:
+    name: slurmctld
+    state: present
+    force_apt_get: true
+
+- name: install slurmctld configuration
+  template:
+    src: slurm.conf.j2
+    dest: /etc/slurm-llnl/slurm.conf
+  register: slurmctl_config
+
+- name: ensure slurmctld has a spool directory
+  file:
+    state: directory
+    path: /var/spool/slurm
+    owner: slurm
+    group: slurm
+
+- name: restart slurmctld
+  service:
+    name: slurmctld
+    state: restarted
+  when: slurmctl_config.changed
+
+- name: enable slurmctl
+  service:
+    name: slurmctld
+    enabled: true
+    state: started
