@@ -43,7 +43,7 @@ Now you should have 3 execute nodes (slurmd instances) and one controller (slurm
 
 Move to the `ansible/` directory, and run `ansible-playbook` 
 ```
-ansible-playbook -i inventory slurm.yml`
+ansible-playbook -i inventory slurm.yml
 ```
 Hopefully, this was it :)
 
