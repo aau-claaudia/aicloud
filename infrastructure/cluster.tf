@@ -32,5 +32,5 @@ resource "local_file" "inventory" {
         exec_privateaddresses = digitalocean_droplet.exec.*.ipv4_address_private
         controller_privateaddresses = digitalocean_droplet.controller.*.ipv4_address_private
     })
-    filename = "../ansible/inventory"
+    filename = "../ansible/terraform-inventory"
 }

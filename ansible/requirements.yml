@@ -1,0 +1,3 @@
+# from private github repo, installing to a relative path
+- src: https://github.com/NVIDIA/deepops
+  version: tags/21.06

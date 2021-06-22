@@ -37,13 +37,13 @@ terraform apply \
 	-var "do_keyname=${DO_KEYNAME}"
 ```
 
-Now you should have 3 execute nodes (slurmd instances) and one controller (slurmctld instance) and terraform should have created an `inventory` file for ansible to use.
+Now you should have 3 execute nodes (slurmd instances) and one controller (slurmctld instance) and terraform should have created an `terraform-inventory` file for ansible to use.
 
 ### Configuring
 
 Move to the `ansible/` directory, and run `ansible-playbook` 
 ```
-ansible-playbook -i inventory slurm.yml
+ansible-playbook -i terraform-inventory slurm.yml
 ```
 Hopefully, this was it :)
 

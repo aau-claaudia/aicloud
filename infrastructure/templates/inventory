@@ -1,9 +1,9 @@
-[exec]
+[slurm-node]
 %{ for index,item in exec ~}
-${exec_hostname[index]} ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_host=${item} private_addr=${exec_privateaddresses[index]}
+${exec_hostname[index]} is_compute=true|bool ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_host=${item} private_addr=${exec_privateaddresses[index]}
 %{ endfor ~}
 
-[controller]
+[slurm-master]
 %{ for index,item in controller ~}
-${controller_hostname[index]} ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_host=${item} private_addr=${controller_privateaddresses[index]}
+${controller_hostname[index]} is_compute=true|bool ansible_ssh_common_args='-o StrictHostKeyChecking=no' ansible_host=${item} private_addr=${controller_privateaddresses[index]}
 %{ endfor ~}
