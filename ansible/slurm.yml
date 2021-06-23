@@ -2,7 +2,6 @@
 
 - name: common configuration for all hosts
   hosts: all
-  remote_user: root
   vars:
     deepops_dir: /opt/deepops
 
@@ -17,9 +16,7 @@
 
 - name: execute nodes
   hosts: exec
-  remote_user: root
 
 
 - name: controller nodes
   hosts: controller
-  remote_user: root
