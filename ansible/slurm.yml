@@ -1,12 +1,18 @@
 ---
 
-- name: common configuration for all hosts
+- name: "deepops: setup slurm"
   hosts: all
   vars:
     deepops_dir: /opt/deepops
+    user: [] # ???? https://github.com/NVIDIA/deepops/blame/1bc7988cb5d0aa64ae81dd3492536994f42f13ba/roles/slurm/tasks/controller.yml#L138
 
   tasks:
-    - name: build slurm on all nodes
+    - name: figure out cpu, gpu and memory
+      include_role:
+        name: facts
+        tasks_from: main
+
+    - name: build and install slurm on all nodes
       include_role:
         name: slurm
         tasks_from: main
@@ -20,3 +26,4 @@
 
 - name: controller nodes
   hosts: controller
+
