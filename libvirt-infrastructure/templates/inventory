@@ -1,0 +1,13 @@
+[slurm-node]
+%{ for index,item in exec ~}
+${exec_hostname[index]} is_compute=true|bool ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyJump=AICLOUD-STAGING' ansible_user=ubuntu ansible_become=yes ansible_host=${item}
+%{ endfor ~}
+
+[slurm-master]
+%{ for index,item in controller ~}
+${controller_hostname[index]} is_controller=true|bool ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyJump=AICLOUD-STAGING' ansible_user=ubuntu ansible_become=yes ansible_host=${item}
+%{ endfor ~}
+
+[slurm-cluster:children]
+slurm-master
+slurm-node

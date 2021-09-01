@@ -1,4 +1,8 @@
 ---
+- name: set inventory_hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+
 - name: Manage hosts
   template:
     src: hosts.j2
