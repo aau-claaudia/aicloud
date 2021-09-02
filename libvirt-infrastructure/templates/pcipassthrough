@@ -1,0 +1,19 @@
+<xsl:stylesheet version="1.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output omit-xml-declaration="yes" indent="yes"/>
+  <xsl:template match="node()|@*">
+     <xsl:copy>
+       <xsl:apply-templates select="node()|@*"/>
+     </xsl:copy>
+  </xsl:template>
+
+   <xsl:template match="graphics">
+      <xsl:copy-of select="."/>
+        <hostdev mode="subsystem" type="pci" managed="yes">
+          <source>
+            <address domain="0x0000" bus="0x${bus}" slot="0x00" function="0x0"/>
+          </source>
+          <address type="pci" domain="0x0000" bus="0x00" slot="0x08" function="0x0"/>
+        </hostdev>
+   </xsl:template>
+</xsl:stylesheet>

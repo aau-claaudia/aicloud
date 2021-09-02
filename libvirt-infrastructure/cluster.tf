@@ -8,6 +8,7 @@ terraform {
     }
 }
 
+
 # instance the provider
 # Notice that, this plugin uses its own ssh implementation which does not at all
 # support .ssh/config and whatever might be configured in there
@@ -27,7 +28,6 @@ resource "libvirt_cloudinit_disk" "commoninit" {
     user_data      = data.template_file.user_data.rendered
     pool           = "default"
 }
-
 
 # We fetch the latest ubuntu release image from their mirrors
 resource "libvirt_volume" "ubuntu-focal" {
@@ -124,6 +124,11 @@ resource "libvirt_volume" "exec-disks" {
     size = 17000000000
 }
 
+# PCI Bus id's of T4 graphics cards
+locals {
+    t4pcibus = ["01","21","41","a1","c1","e2"]
+}
+
 # Create the machine
 resource "libvirt_domain" "exec-domains" {
     count = 6
@@ -154,13 +159,19 @@ resource "libvirt_domain" "exec-domains" {
     disk {
         volume_id = libvirt_volume.exec-disks[count.index].id
     }
+
+    xml {
+      xslt = templatefile("${path.module}/templates/pcipassthrough", {
+          bus = local.t4pcibus[count.index]
+      })
+    }
 }
 
 # generate inventory file for Ansible
 resource "local_file" "inventory" {
     content = templatefile("${path.module}/templates/inventory", {
-        exec = libvirt_domain.exec-domains.*.network_interface.0.addresses.0
-        controller = libvirt_domain.controller-domain.*.network_interface.0.addresses.0
+        exec = libvirt_domain.exec-domains.*.network_interface.0.addresses
+        controller = libvirt_domain.controller-domain.*.network_interface.0.addresses
         exec_hostname = libvirt_domain.exec-domains.*.name
         controller_hostname = libvirt_domain.controller-domain.*.name
     })

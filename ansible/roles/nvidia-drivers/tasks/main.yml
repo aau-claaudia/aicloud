@@ -1,0 +1,10 @@
+---
+
+- name: install nvidia driver and utils
+  apt:
+    update_cache: true
+    state: present
+    force_apt_get: true
+    pkg:
+      - nvidia-headless-470 
+      - nvidia-utils-470
