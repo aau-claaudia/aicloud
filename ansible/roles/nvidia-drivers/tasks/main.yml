@@ -8,3 +8,6 @@
     pkg:
       - nvidia-headless-470 
       - nvidia-utils-470
+
+- name: Unconditionally reboot the machine with all defaults
+  reboot:

@@ -1,14 +1,20 @@
 ---
 
+- name: generic
+  hosts: all
+  roles:
+    - { name: hosts, tags: hosts }
+
+- name: execute nodes
+  hosts: slurm-node
+  roles:
+    - { name: nvidia-drivers, tags: nvidia-drivers }
+
 - name: "deepops: setup slurm"
   hosts: all
   vars:
     deepops_dir: /opt/deepops
     user: [] # ???? https://github.com/NVIDIA/deepops/blame/1bc7988cb5d0aa64ae81dd3492536994f42f13ba/roles/slurm/tasks/controller.yml#L138
-
-  roles:
-    - { name: hosts, tags: hosts }
-    - { name: nvidia-drivers }
 
   tasks:
     - name: figure out cpu, gpu and memory
@@ -21,10 +27,6 @@
         name: slurm
         tasks_from: main
 
-- name: execute nodes
-  hosts: exec
-
-
 - name: controller nodes
-  hosts: controller
+  hosts: slurm-master
 
