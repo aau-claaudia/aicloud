@@ -8,6 +8,9 @@ terraform {
     }
 }
 
+locals {
+  libvirtd-sock = pathexpand("~/.ssh/libvirtd-sock")
+}
 
 # instance the provider
 # Notice that, this plugin uses its own ssh implementation which does not at all
@@ -15,7 +18,7 @@ terraform {
 # .... instead, we will just be forwarding it to our self:
 # ssh AICLOUD-STAGING -L/home/fas/.ssh/libvirtd-sock:/run/libvirt/libvirt-sock
 provider "libvirt" {
-    uri = "qemu+unix:///system?socket=/home/fas/.ssh/libvirtd-sock"
+    uri = "qemu+unix:///system?socket=${local.libvirtd-sock}"
 }
 
 data "template_file" "user_data" {
