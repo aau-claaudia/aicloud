@@ -9,6 +9,7 @@
   hosts: slurm-node
   roles:
     - { name: nvidia-drivers, tags: nvidia-drivers }
+    - { name: singularity, tags: singularity }
 
 - name: "deepops: setup slurm"
   hosts: all

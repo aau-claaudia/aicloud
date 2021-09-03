@@ -1,0 +1,38 @@
+---
+- name: ensure golang is installed
+  snap:
+    name: go
+    classic: yes
+
+- name: dependencies
+  apt:
+    state: present
+    force_apt_get: true
+    pkg:
+      - build-essential 
+      - libseccomp-dev 
+      - pkg-config 
+      - squashfs-tools 
+      - cryptsetup
+
+- name: fetch singularity
+  get_url:
+    url: https://github.com/sylabs/singularity/releases/download/v3.8.3/singularity-ce-3.8.3.tar.gz
+    dest: /tmp
+
+
+- name: extract singularity
+  unarchive:
+    src: /tmp/singularity-ce-3.8.3.tar.gz
+    dest: /tmp
+    remote_src: true #TODO: fetch the archive on the ansible controller and let unarchive push it put to reduce traffic
+
+- name: Build and install singularity
+  command:
+    cmd: "{{ item }}"
+    chdir: /tmp/singularity-ce-3.8.3
+    creates: /usr/local/bin/singularity
+  with_items:
+    - "./mconfig"
+    - "make -C builddir"
+    - "make -C builddir install"
