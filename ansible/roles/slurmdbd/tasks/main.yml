@@ -1,0 +1,26 @@
+---
+  # we dont want to manage a slurm mysql password - insted
+  # we let mysql detect if its the slurm user which is connecting
+  # as this command is idempotent - we will just run it every time
+- name: grant slurm user access to database identified by unix_socket insted of password
+  command: mysql -e "grant all on slurm_acct_db.* to slurm@localhost identified via unix_socket;"
+
+  # In order for this to work, we must change the user running the
+  # slurmdbd in systemd, by overriding its defaults
+- name: add override directory for slurmdbd
+  file:
+    state: directory
+    path: /etc/systemd/system/slurmdbd.service.d/
+  
+- name: override User=slurm in slurmdbd.service
+  copy:
+    src: override-slurmdbd.conf
+    dest: /etc/systemd/system/slurmdbd.service.d/override.conf
+  register: overrideslurmdbd
+
+- name: reload and restart slurmdbd.service
+  service:
+    name: slurmdbd.service
+    state: restarted
+    daemon_reload: true
+  when: overrideslurmdbd

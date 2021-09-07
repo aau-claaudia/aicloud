@@ -30,4 +30,6 @@
 
 - name: controller nodes
   hosts: slurm-master
+  roles:
+    - { name: slurmdbd, tags: slurmdbd }
 
