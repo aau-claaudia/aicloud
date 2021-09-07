@@ -1,0 +1,45 @@
+---
+# this playbook will expose the controller to the internet though remote.moe
+# should only be used when inviting people in for staging and testing
+- name: expose
+  hosts: slurm-master
+  tasks:
+    - name: add remote.moe key
+      known_hosts:
+        name: remote.moe
+        key: remote.moe ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCcByU9xb/4R5z4AZuuDSsauaJ9gP4/W2HXWaukGdP8sfKrHGmCrq+s4qqdaQAepixCYdmAa98taBw3/kAIYnZ09oOnxpYhkZiSN9XIxJBOBnUdknBfL1ACFZdkNxq2flnzFb+98iFoSBZ7o3R8yRH8NeQzGTXYZZ9x4qUkexFHlZgogbCvcapKiRwUIngEhkBfUXawNcjyTa+YoOYE8m9CHTCBhN4TQwl9RJf8B8pcm4aT7ljKJGvmqutDSx+bVHvfVrz5w+D9pkbelWp+DAnNzEQEI4u51zQAui3PAJBNdLA9LbrfijIch0uYQIde8kBOzj8E0uEN9Hje6q3ryrNbuI4RUXe5IktUg2YY4bpgfMY/on5ruqPMdYg0J2ZbbkhkorDRbC5aeoRAC0yAcoJMwVqZ4/dGk9hSLCqE1L4o4WMCBQpwpXpVxg30uOwFc2mdvmbaasT0kr74Zv7ELWhZnCxNPJh3Zht2095BqHXN7oHukUcM0LZ9or79WgWoTHM=
+        state: present
+
+    - name: generate keypair
+      command: 
+        cmd: ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa
+        creates: /root/.ssh/id_rsa
+
+    - name: add service
+      copy:
+        dest: /etc/systemd/system/remotemoe.service
+        content: |
+          [Unit]
+          Description=remotemoe tunnel
+          StartLimitIntervalSec=0
+          After=network.target
+
+          [Service]
+          Restart=always
+          RestartSec=1m
+          ExecStart=/usr/bin/ssh \
+            -o "ExitOnForwardFailure yes" \
+            -o "ServerAliveInterval 30"  \
+            -o "ServerAliveCountMax 3" \
+            -R 22:localhost:22 \
+            remote.moe -N
+
+          [Install]
+          WantedBy=default.target
+
+    - name: enable remotemoe
+      systemd:
+        name: remotemoe
+        enabled: true
+        daemon_reload: true
+        state: started
