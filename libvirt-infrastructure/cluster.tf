@@ -57,7 +57,6 @@ resource "libvirt_domain" "login-domain" {
 
     cloudinit = libvirt_cloudinit_disk.commoninit.id
 
-
     network_interface {
         network_name = "default"
         wait_for_lease = true
@@ -96,7 +95,6 @@ resource "libvirt_domain" "controller-domain" {
 
     cloudinit = libvirt_cloudinit_disk.commoninit.id
 
-
     network_interface {
         network_name = "default"
         wait_for_lease = true
@@ -121,26 +119,26 @@ resource "libvirt_domain" "controller-domain" {
 
 # execute disks based on ubuntu-focal
 resource "libvirt_volume" "exec-disks" {
-    count = 6
+    count = 2
     name = "exec-${count.index}"
     base_volume_id = libvirt_volume.ubuntu-focal.id
-    size = 17000000000
+    size = 17000000000*3
 }
 
 # PCI Bus id's of T4 graphics cards
 locals {
-    t4pcibus = ["01","21","41","a1","c1","e2"]
+    t4pcibus= [["01","21","41"], ["a1","c1","e2"]]
+    pcislots = ["08", "09", "10"]
 }
 
 # Create the machine
 resource "libvirt_domain" "exec-domains" {
-    count = 6
+    count = 2
     name   = "exec-${count.index}"
     memory = "10240"
     vcpu   = 6
 
     cloudinit = libvirt_cloudinit_disk.commoninit.id
-
 
     network_interface {
         network_name = "default"
@@ -165,7 +163,8 @@ resource "libvirt_domain" "exec-domains" {
 
     xml {
       xslt = templatefile("${path.module}/templates/pcipassthrough", {
-          bus = local.t4pcibus[count.index]
+          buses = local.t4pcibus[count.index]
+          slot = local.pcislots
       })
     }
 }
