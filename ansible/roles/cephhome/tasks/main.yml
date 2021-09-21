@@ -8,6 +8,7 @@
 - name: add cephfs secret
   copy:
     dest: /etc/ceph/client.ai.secret
+    mode: 0600
     content: "{{ secret }}"
 
 - name: add mount
