@@ -18,19 +18,19 @@
 - name: fetch singularity
   get_url:
     url: https://github.com/sylabs/singularity/releases/download/v3.8.3/singularity-ce-3.8.3.tar.gz
-    dest: /tmp
+    dest: /opt
 
 
 - name: extract singularity
   unarchive:
-    src: /tmp/singularity-ce-3.8.3.tar.gz
-    dest: /tmp
+    src: /opt/singularity-ce-3.8.3.tar.gz
+    dest: /opt
     remote_src: true #TODO: fetch the archive on the ansible controller and let unarchive push it put to reduce traffic
 
 - name: Build and install singularity
   command:
     cmd: "{{ item }}"
-    chdir: /tmp/singularity-ce-3.8.3
+    chdir: /opt/singularity-ce-3.8.3
     creates: /usr/local/bin/singularity
   with_items:
     - "./mconfig"
