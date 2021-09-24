@@ -1,0 +1,15 @@
+[slurm-node]
+a256-t4-01.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.130
+a256-t4-02.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.131
+a256-t4-03.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.132
+# offline for staging purposes
+# a256-t4-04.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.133
+
+nv-ai-04.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.19.20.97
+
+[slurm-master]
+ai-fe02.srv.aau.dk is_controller=true|bool ansible_become=yes ansible_host=172.19.8.30
+
+[slurm-cluster:children]
+slurm-master
+slurm-node
