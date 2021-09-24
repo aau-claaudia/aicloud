@@ -43,3 +43,9 @@
         enabled: true
         daemon_reload: true
         state: started
+
+    - name: figure out hostname
+      command: ssh remote.moe whoami
+      register: whoami
+
+    - debug: msg="ssh -J remote.moe {{ansible_user}}@{{ whoami.stdout }}"
