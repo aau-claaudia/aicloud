@@ -45,7 +45,7 @@ resource "libvirt_volume" "ubuntu-focal" {
 resource "libvirt_volume" "login-disk" {
     name = "login"
     base_volume_id = libvirt_volume.ubuntu-focal.id
-    size = 17000000000
+    size = 17000000512
 }
 
 # login node
@@ -83,7 +83,7 @@ resource "libvirt_domain" "login-domain" {
 resource "libvirt_volume" "controller-disk" {
     name = "controller"
     base_volume_id = libvirt_volume.ubuntu-focal.id
-    size = 17000000000
+    size = 17000000512
 }
 
 # controller node
@@ -122,7 +122,7 @@ resource "libvirt_volume" "exec-disks" {
     count = 2
     name = "exec-${count.index}"
     base_volume_id = libvirt_volume.ubuntu-focal.id
-    size = 17000000000*3
+    size = 51000000512
 }
 
 # PCI Bus id's of T4 graphics cards
