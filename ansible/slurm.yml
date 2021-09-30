@@ -28,6 +28,15 @@
         name: slurm
         tasks_from: main
 
+  # the pam_slurm_adopt module is unable to find
+  # libslurm.so if this is not updated - its not a big deal
+  # but should properly be fixed upstream
+- name: "small deepops fixes"
+  hosts: all
+  tasks:
+    - name: run ldconfig to update cache
+      command: ldconfig
+
 - name: controller nodes
   hosts: slurm-master
   roles:
