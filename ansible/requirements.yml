@@ -1,3 +1,4 @@
 # from private github repo, installing to a relative path
+# ansible-galaxy install -r requirements.yml
 - src: https://github.com/NVIDIA/deepops
-  version: tags/21.06
+  version: release-21.09
