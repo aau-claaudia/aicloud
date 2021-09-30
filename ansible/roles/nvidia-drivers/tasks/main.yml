@@ -8,6 +8,8 @@
     pkg:
       - nvidia-headless-470 
       - nvidia-utils-470
+  register: driver
 
-- name: Unconditionally reboot the machine with all defaults
+- name: reboot the machine when drivers changed
   reboot:
+  when: driver.changed
