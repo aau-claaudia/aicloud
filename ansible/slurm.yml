@@ -16,7 +16,6 @@
   vars:
     deepops_dir: /opt/deepops
     user: [] # ???? https://github.com/NVIDIA/deepops/blame/1bc7988cb5d0aa64ae81dd3492536994f42f13ba/roles/slurm/tasks/controller.yml#L138
-    slurm_conf_template: "slurm/templates/slurm.conf.j2"
 
   tasks:
     - name: figure out cpu, gpu and memory
