@@ -18,3 +18,25 @@
     fstype: ceph
     opts: "name={{ user }},secretfile=/etc/ceph/client.ai.secret"
     state: present
+
+- name: ensure attr is installed
+  when: is_controller is defined
+  apt:
+    name: attr
+    state: present
+    force_apt_get: true
+
+- name: add quota.sh script
+  when: is_controller is defined
+  copy:
+    src: quota.sh
+    dest: /opt/quota.sh
+    mode: 0700
+
+- name: ensure quota script is run by pam on login
+  when: is_controller is defined
+  blockinfile:
+    path: /etc/pam.d/common-session
+    marker: "### {mark} ANSIBLE MANAGED BLOCK"
+    insertafter: "# end of pam-auth-update config"
+    block: session optional pam_exec.so /opt/quota.sh

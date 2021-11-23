@@ -15,23 +15,30 @@
       - squashfs-tools 
       - cryptsetup
 
+
+- name: Check if singularity exists
+  stat:
+    path: /usr/local/bin/singularity
+  register: singularity_stat_result
+
 - name: fetch singularity
+  when: not singularity_stat_result.stat.exists
   get_url:
     url: https://github.com/sylabs/singularity/releases/download/v3.8.3/singularity-ce-3.8.3.tar.gz
     dest: /opt
 
-
 - name: extract singularity
+  when: not singularity_stat_result.stat.exists
   unarchive:
     src: /opt/singularity-ce-3.8.3.tar.gz
     dest: /opt
     remote_src: true #TODO: fetch the archive on the ansible controller and let unarchive push it put to reduce traffic
 
 - name: Build and install singularity
+  when: not singularity_stat_result.stat.exists
   command:
     cmd: "{{ item }}"
     chdir: /opt/singularity-ce-3.8.3
-    creates: /usr/local/bin/singularity
   with_items:
     - "./mconfig"
     - "make -C builddir"
