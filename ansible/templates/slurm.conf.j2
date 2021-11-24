@@ -151,6 +151,4 @@ GresTypes=gpu
     State=UNKNOWN
 {% endfor %}
 
-PartitionName=unprioritized PriorityTier=0 Nodes=ALL Default=YES State=UP OverSubscribe=NO MaxTime=INFINITE
-PartitionName=prioritized PriorityTier=10 AllowGroups=ai-pilot-user@srv.aau.dk OverSubscribe=NO Nodes=exec-0
-PartitionName=create PriorityTier=10 AllowGroups=ai-create-user@srv.aau.dk OverSubscribe=NO Nodes=exec-1
+include /etc/slurm/slurm.conf.d/{{ inventory_file | basename }}.conf

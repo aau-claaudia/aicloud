@@ -16,13 +16,23 @@
   vars:
     deepops_dir: /opt/deepops
     user: [] # ???? https://github.com/NVIDIA/deepops/blame/1bc7988cb5d0aa64ae81dd3492536994f42f13ba/roles/slurm/tasks/controller.yml#L138
-    slurm_conf_template: "slurm/templates/slurm.conf.j2"
+    slurm_conf_template: "templates/slurm.conf.j2"
 
   tasks:
     - name: figure out cpu, gpu and memory
       include_role:
         name: facts
         tasks_from: main
+
+    - name: ensure slurm.conf.d directory
+      file:
+        state: directory
+        path: /etc/slurm/slurm.conf.d
+
+    - name: add pr environment config
+      template:
+        src: slurm.conf.d/{{ inventory_file | basename }}.conf
+        dest: /etc/slurm/slurm.conf.d/{{ inventory_file | basename }}.conf
 
     - name: build and install slurm on all nodes
       include_role:
@@ -42,4 +52,3 @@
   hosts: slurm-master
   roles:
     - { name: slurmdbd, tags: slurmdbd }
-
