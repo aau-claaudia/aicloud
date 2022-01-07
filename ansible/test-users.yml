@@ -1,0 +1,48 @@
+---
+# This playbook will insert some test users and enable password authentication
+- name: test users
+  hosts: all
+  vars:
+    users: 
+      - alfa
+      - bravo
+      - charlie
+      - delta
+      - foxtrot
+      - golf
+      - hotel
+      - india
+      - juliett
+      - kilo
+      - lima
+      - mike
+      - november
+      - oscar
+      - papa
+      - quebec
+      - romeo
+      - sierra
+      - tango
+      - uniform
+      - victor
+      - whiskey
+      - yankee
+      - zulu
+  tasks:
+    - name: "add user"
+      user:
+        name: "{{ item }}"
+        uid: "{{ 1500 + userindex }}"
+        home: "/home/{{ item }}"
+        skeleton: /etc/skel
+        shell: /bin/bash
+        password: "{{ item | password_hash('sha512', 'saltekiks') }}"
+      loop: "{{ users }}"
+      loop_control:
+        index_var: userindex
+
+    - name: enable password auth
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication no'
+        line: 'PasswordAuthentication yes'
