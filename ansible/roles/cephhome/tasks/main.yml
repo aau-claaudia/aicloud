@@ -39,4 +39,4 @@
     path: /etc/pam.d/common-session
     marker: "### {mark} ANSIBLE MANAGED BLOCK"
     insertafter: "# end of pam-auth-update config"
-    block: session optional pam_exec.so /opt/quota.sh
+    block: session optional pam_exec.so stdout /opt/quota.sh
