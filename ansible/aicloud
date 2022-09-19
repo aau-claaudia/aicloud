@@ -5,6 +5,7 @@ a256-t4-03.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.2
 # offline for staging purposes
 # a256-t4-04.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.133
 
+nv-ai-01.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.19.20.98
 nv-ai-04.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.19.20.97
 
 i256-a10-06.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.172
