@@ -1,6 +1,6 @@
 [slurm-node]
 %{ for index,item in exec ~}
-${exec_hostname[index]} is_compute=true|bool ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyJump=AICLOUD-STAGING' ansible_become=yes ansible_host=%{ if can(item.0) }${item.0}%{ else }unnamed%{ endif }
+${exec_hostname[index]} is_compute=true|bool gres=t4 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyJump=AICLOUD-STAGING' ansible_become=yes ansible_host=%{ if can(item.0) }${item.0}%{ else }unnamed%{ endif }
 %{ endfor ~}
 
 [slurm-master]
