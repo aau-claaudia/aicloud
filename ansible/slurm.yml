@@ -13,6 +13,7 @@
 
 - name: "deepops: setup slurm"
   hosts: all
+  tags: slurm
   vars:
     deepops_dir: /opt/deepops
     user: [] # ???? https://github.com/NVIDIA/deepops/blame/1bc7988cb5d0aa64ae81dd3492536994f42f13ba/roles/slurm/tasks/controller.yml#L138
