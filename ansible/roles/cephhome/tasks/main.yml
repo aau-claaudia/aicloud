@@ -5,6 +5,12 @@
     state: present
     force_apt_get: true
 
+- name: ensure acl tool is present
+  apt:
+    name: acl
+    state: present
+    force_apt_get: true
+
 - name: add cephfs secret
   copy:
     dest: /etc/ceph/client.ai.secret
