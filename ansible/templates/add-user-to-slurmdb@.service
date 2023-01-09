@@ -1,0 +1,13 @@
+[Unit]
+Description=Add user to slurm database
+# PartOf=user@.service
+After=user@.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+
+ExecStart=/usr/bin/logger "hello service part of user template"
+
+[Install]
+WantedBy=multi-user.target
