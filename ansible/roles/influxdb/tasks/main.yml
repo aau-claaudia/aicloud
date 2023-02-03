@@ -17,13 +17,13 @@
   apt:
     name: influxdb2-cli
 
-- name: Create database
-  collections:
-      - community.general
-  influxdb_database:
-    database_name: AI Cloud Monitoring
-    username: claaudia
-    password: hemmelighed
+# - name: Create database
+#   collections:
+#       - community.general
+#   influxdb_database:
+#     database_name: AI Cloud Monitoring
+#     username: claaudia
+#     password: hemmelighed
 
 - name: start influxdb
   service:
