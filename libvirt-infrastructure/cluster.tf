@@ -17,9 +17,7 @@ locals {
 # support .ssh/config and whatever might be configured in there
 # .... instead, we will just be forwarding it to our self:
 # ssh AICLOUD-STAGING -L/home/fas/.ssh/libvirtd-sock:/run/libvirt/libvirt-sock
-provider "libvirt" {
-    uri = "qemu+unix:///system?socket=${local.libvirtd-sock}"
-}
+provider "libvirt" {uri = "qemu+unix:///system?socket=${local.libvirtd-sock}"}
 
 data "template_file" "user_data" {
     template = file("${path.module}/cloud_init.cfg")

@@ -1,5 +1,4 @@
 ---
-
 - name: generic
   hosts: all
   roles:
@@ -10,6 +9,7 @@
   roles:
     - { name: nvidia-drivers, tags: nvidia-drivers }
     - { name: singularity, tags: singularity }
+    - { name: telegraf, tags: telegraf }
 
 - name: "deepops: setup slurm"
   hosts: all
@@ -55,3 +55,5 @@
   hosts: slurm-master
   roles:
     - { name: slurmdbd, tags: slurmdbd }
+    - { name: influxdb, tags: influxdb }
+    - { name: grafana, tags: grafana }

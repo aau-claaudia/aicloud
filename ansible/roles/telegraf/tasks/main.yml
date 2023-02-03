@@ -1,0 +1,20 @@
+---
+- name: get apt key from url
+  apt_key:
+    url: https://repos.influxdata.com/influxdata-archive_compat.key
+    keyring: /etc/apt/trusted.gpg.d/influxdb.gpg
+
+- name: add repository
+  apt_repository:
+    repo: deb [signed-by=/etc/apt/trusted.gpg.d/influxdb.gpg] https://repos.influxdata.com/debian stable main
+    update_cache: true
+
+- name: install telegraf
+  apt:
+    name: telegraf
+
+- name: start telegraf
+  service:
+    name: telegraf
+    state: stopped
+    enabled: yes

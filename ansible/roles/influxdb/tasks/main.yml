@@ -1,0 +1,32 @@
+---
+- name: fetch apt key from url
+  apt_key:
+    url: https://repos.influxdata.com/influxdata-archive_compat.key
+
+- name: add repository
+  apt_repository:
+    repo: 'deb https://repos.influxdata.com/ubuntu trusty stable'
+    state: present
+    update_cache: yes
+
+- name: install influxdb
+  apt:
+    name: influxdb2
+
+- name: install influxdb2-cli
+  apt:
+    name: influxdb2-cli
+
+- name: Create database
+  collections:
+      - community.general
+  influxdb_database:
+    database_name: AI Cloud Monitoring
+    username: claaudia
+    password: hemmelighed
+
+- name: start influxdb
+  service:
+    name: influxd
+    enabled: yes
+    state: started
