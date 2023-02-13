@@ -1,19 +1,19 @@
 [slurm-node]
-# a256-t4-01.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.130
-a256-t4-02.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.131
-a256-t4-03.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.132
+# a256-t4-01.srv.aau.dk is_compute=true|bool gpu_type=t4 ansible_become=yes ansible_host=172.21.212.130
+a256-t4-02.srv.aau.dk is_compute=true|bool gpu_type=t4 ansible_become=yes ansible_host=172.21.212.131
+a256-t4-03.srv.aau.dk is_compute=true|bool gpu_type=t4 ansible_become=yes ansible_host=172.21.212.132
 # offline for staging purposes
-# a256-t4-04.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.133
+# a256-t4-04.srv.aau.dk is_compute=true|bool gpu_type=t4 ansible_become=yes ansible_host=172.21.212.133
 
-nv-ai-01.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.19.20.98
-nv-ai-02.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.19.20.99
-nv-ai-04.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.19.20.97
+nv-ai-01.srv.aau.dk is_compute=true|bool gpu_type=v100 ansible_become=yes ansible_host=172.19.20.98
+nv-ai-02.srv.aau.dk is_compute=true|bool gpu_type=v100 ansible_become=yes ansible_host=172.19.20.99
+nv-ai-04.srv.aau.dk is_compute=true|bool gpu_type=a100 ansible_become=yes ansible_host=172.19.20.97
 
-i256-a10-06.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.172
-i256-a10-07.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.173
-i256-a10-08.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.174
-i256-a10-09.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.175
-i256-a10-10.srv.aau.dk is_compute=true|bool ansible_become=yes ansible_host=172.21.212.176
+i256-a10-06.srv.aau.dk is_compute=true|bool gpu_type=a10 ansible_become=yes ansible_host=172.21.212.172
+i256-a10-07.srv.aau.dk is_compute=true|bool gpu_type=a10 ansible_become=yes ansible_host=172.21.212.173
+i256-a10-08.srv.aau.dk is_compute=true|bool gpu_type=a10 ansible_become=yes ansible_host=172.21.212.174
+i256-a10-09.srv.aau.dk is_compute=true|bool gpu_type=a10 ansible_become=yes ansible_host=172.21.212.175
+i256-a10-10.srv.aau.dk is_compute=true|bool gpu_type=a10 ansible_become=yes ansible_host=172.21.212.176
 
 [slurm-master]
 ai-fe02.srv.aau.dk is_controller=true|bool ansible_become=yes ansible_host=172.19.8.30
