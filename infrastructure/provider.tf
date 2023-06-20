@@ -1,19 +1,20 @@
 terraform {
+required_version = ">= 0.14.0"
   required_providers {
-    digitalocean = {
-      source = "digitalocean/digitalocean"
-      version = "1.22.2"
+    openstack = {
+      source  = "terraform-provider-openstack/openstack"
+      version = "~> 1.48.0"
     }
   }
 }
 
-variable "do_token" {}
+#variable "do_token" {}
 variable "do_keyname" {}
+# 
+#provider "digitalocean" {
+#  token = var.do_token
+#}
 
-provider "digitalocean" {
-  token = var.do_token
-}
-
-data "digitalocean_ssh_key" "terraform" {
+data "openstack_ssh_key" "terraform" {
   name = var.do_keyname
 }
