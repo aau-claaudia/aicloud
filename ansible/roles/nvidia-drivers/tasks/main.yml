@@ -6,8 +6,8 @@
     state: present
     force_apt_get: true
     pkg:
-      - nvidia-headless-525
-      - nvidia-utils-525
+      - nvidia-headless-535
+      - nvidia-utils-535
   register: driver
 
 - name: reboot the machine when drivers changed
