@@ -152,6 +152,7 @@ GresTypes=gpu
     ThreadsPerCore={{ cpu_topology.threads_per_core }}{{ " " -}}
     Procs={{ cpu_topology.sockets|int * cpu_topology.cores_per_socket|int }}{{ " " -}}
     RealMemory={{ memory.total_mb|int }}{{ " " -}}
+    Weight={{hostvars[node_name]["slurm_weight"]}}{{ " " -}}
     State=UNKNOWN
 {% endfor %}
 
