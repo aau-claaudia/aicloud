@@ -144,7 +144,9 @@ GresTypes=gpu
 {% set memory =  hostvars[node_name]["ansible_local"]["memory"] -%}
 {% set cpu_topology =  hostvars[node_name]["ansible_local"]["topology"]["cpu_topology"] -%}
 {% set gpu_topology =  hostvars[node_name]["ansible_local"]["topology"]["gpu_topology"] -%}
-    NodeName={{ node_name }}{{ " " -}}
+    NodeName={{node_name|regex_replace('.srv.aau.dk','')}}{{" "-}}
+    NodeHostname={{node_name}}{{" "-}}
+    NodeAddr={{hostvars[node_name]["ansible_host"]}}{{" "-}}
     {% if slurm_manage_gpus %} {%- if gpu_topology|count %} Gres=gpu:{{hostvars[node_name]["gpu_type"]}}:{{ gpu_topology|count }} {% endif -%} {% endif %}
     CPUs={{ cpu_topology.logical_cpus|int }}{{ " " -}}
     Sockets={{ cpu_topology.sockets|int }}{{ " " -}}
@@ -152,7 +154,7 @@ GresTypes=gpu
     ThreadsPerCore={{ cpu_topology.threads_per_core }}{{ " " -}}
     Procs={{ cpu_topology.sockets|int * cpu_topology.cores_per_socket|int }}{{ " " -}}
     RealMemory={{ memory.total_mb|int }}{{ " " -}}
-    Weight={{hostvars[node_name]["slurm_weight"]}}{{ " " -}}
+    Weight={{hostvars[node_name]["slurm_weight"]}}{{" "-}}
     State=UNKNOWN
 {% endfor %}
 
