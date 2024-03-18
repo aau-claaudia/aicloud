@@ -1,16 +1,92 @@
-#!/bin/bash -e
+#!/bin/bash
+#
+# Created 2024-03-18 by Jorgen Bjornstrup (jorgen@its.aau.dk)
+#
+# ... to replace former script created 2021-10-06 by Kristian Mide (fas@mide.dk)
 
-[ "$PAM_TYPE" = "open_session" ] || exit 0
+## @file  quota.sh
+## @brief Bash script to show and set CephFS disk quota for, e.g., homedirs
+## @details
+## ```text
+## Usage: quota.sh [<directory> [<quota>]]
+##
+## Args:
+## With 0 arguments: Show disk usage and quota for the homedir of current user.
+## With 1 argument:  Show disk usage and quota for the specified directory.
+## With 2 arguments: Set specified disk quota for the specified directory.
+## <quota> must be the quota in bytes, or a number with a binary unit suffix.
+## ... 1K=1024, 1M=1024K, 1G=1024M, 1T=1024G, ...
+##
+## The script will exit immediately if called by root with 0 arguments.
 
-# 1024 Gb for everyone
-SIZE=$(bc <<< "1024^3*1024")
-DIRECTORY=$(getent passwd ${PAM_USER} | cut -d: -f6)
+# Default quota for homedirs without exiting quota setting
+quota_default="1T"
 
-logger "Setting ${SIZE} byte quota for ${PAM_USER} on ${DIRECTORY}"
-setfattr -n ceph.quota.max_bytes -v ${SIZE} ${DIRECTORY}
+set -o errexit
 
-# numfmt --to=iec-i --suffix=B `getfattr --absolute-names --only-values -n ceph.quota.max_bytes ${DIRECTORY}`
+function usage
+{
+    cat $0|grep ^##|cut -c4- |\
+        sed -e 's/^@brief  *\|^@details *\|^```.*//' |\
+        tail -n+2|cat -s
+    exit $1
+}
 
-USAGE=$(numfmt --to=iec-i --suffix=B `getfattr --absolute-names --only-values -n ceph.dir.rbytes ${DIRECTORY}`)
-AVAILABLE=$(numfmt --to=iec-i --suffix=B ${SIZE})
-echo "Current quota usage: ${USAGE} / ${AVAILABLE}"
+function quota_usage
+{
+    local dir="$1"
+    local usage=`getfattr --absolute-names --only-values \
+			  -n ceph.dir.rbytes $dir || echo 0`
+    local usage_text=`numfmt --to=iec-i --suffix=B $usage`
+    local quota=`getfattr --absolute-names --only-values \
+                 	  -n ceph.quota.max_bytes $dir || echo 0`
+    local quota_text=`numfmt --to=iec-i --suffix=B $quota`
+    echo "Disk usage and quota for $dir: $usage_text / $quota_text"   
+}
+
+function quota_get
+{
+    local dir="$1"
+    local quota=`getfattr --absolute-names --only-values \
+                 	  -n ceph.quota.max_bytes $dir || echo 0`
+    echo "$quota"
+}
+
+function quota_set
+{
+    local dir="$1"
+    local quota="$2"
+    local quota_bytes=`numfmt --from=iec $quota`
+    setfattr -n ceph.quota.max_bytes -v "$quota_bytes" "$dir"
+}
+
+if [ $# -eq 0 ]
+then if [ $EUID -eq 0 ]
+     then exit 0
+     elif [ "$PAM_TYPE" = "open_session" ]
+     then homedir=$(getent passwd $PAM_USER | cut -d: -f6)
+	  if [ `quota_get $homedir` -eq 0 ]
+	  then quota_set "$homedir" "$quota_default"
+	  fi
+	  quota_usage "$homedir"
+	  exit 0
+     else homedir=$(getent passwd $USER | cut -d: -f6)
+	  quota_usage "$homedir"
+	  exit 0
+     fi
+elif [ $# -eq 1 -a -d "$1" ]
+then dir="$1"
+     quota_usage $dir
+     exit 0
+elif [ $# -eq 2 -a -d "$1" ]
+then dir="$1"
+     quota="$2"
+     quota_set "$dir" "$quota"
+     quota_usage "$dir"
+     exit 0
+fi
+if [ $# -ge 1 -a ! -d "$1" ]
+then echo "Error: Not a directory: $1"
+     echo
+fi
+usage 1
