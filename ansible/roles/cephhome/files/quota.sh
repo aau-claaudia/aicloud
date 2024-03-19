@@ -64,16 +64,20 @@ function quota_set
 }
 
 if [ $# -eq 0 ]
-then if [ "$PAM_TYPE" = "open_session" ]
-     then if [ "$PAM_USER" = "root" ]
-	  then exit 0
+then if [ -n "$PAM_TYPE" ]
+     then if [ "$PAM_TYPE" = "open_session" ]
+	  then if [ "$PAM_USER" = "root" ]
+	       then exit 0
+	       fi
+	       homedir=$(getent passwd "$PAM_USER" | cut -d: -f6)
+	       if [ `quota_get "$homedir"` -eq 0 ]
+	       then quota_set "$homedir" "$quota_default"
+	       fi
+	       quota_usage "$homedir"
+	       exit 0
+	  else
+	      exit 0
 	  fi
-	  homedir=$(getent passwd "$PAM_USER" | cut -d: -f6)
-	  if [ `quota_get "$homedir"` -eq 0 ]
-	  then quota_set "$homedir" "$quota_default"
-	  fi
-	  quota_usage "$homedir"
-	  exit 0
      else homedir=$(getent passwd "$USER" | cut -d: -f6)
 	  quota_usage "$homedir"
 	  exit 0
