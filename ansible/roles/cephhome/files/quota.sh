@@ -11,13 +11,15 @@
 ## Usage: quota.sh [<directory> [<quota>]]
 ##
 ## Args:
+## With 0 arguments, called by PAM during user login:
+##   Set the default quota, e.g., 1TiB, for the homedir of the user, iff the
+##   homedir is without quota, and then show the disk usage and quota.
+##   The script will exit immediately if called by PAM for the root user.
 ## With 0 arguments: Show disk usage and quota for the homedir of current user.
 ## With 1 argument:  Show disk usage and quota for the specified directory.
 ## With 2 arguments: Set specified disk quota for the specified directory.
 ## <quota> must be the quota in bytes, or a number with a binary unit suffix.
 ## ... 1K=1024, 1M=1024K, 1G=1024M, 1T=1024G, ...
-##
-## The script will exit immediately if called by root with 0 arguments.
 
 # Default quota for homedirs without exiting quota setting
 quota_default="1T"
@@ -36,10 +38,10 @@ function quota_usage
 {
     local dir="$1"
     local usage=`getfattr --absolute-names --only-values \
-			  -n ceph.dir.rbytes $dir || echo 0`
+			  -n ceph.dir.rbytes $dir 2>/dev/null || echo 0`
     local usage_text=`numfmt --to=iec-i --suffix=B $usage`
     local quota=`getfattr --absolute-names --only-values \
-                 	  -n ceph.quota.max_bytes $dir || echo 0`
+                 	  -n ceph.quota.max_bytes $dir 2>/dev/null || echo 0`
     local quota_text=`numfmt --to=iec-i --suffix=B $quota`
     echo "Disk usage and quota for $dir: $usage_text / $quota_text"   
 }
@@ -48,7 +50,7 @@ function quota_get
 {
     local dir="$1"
     local quota=`getfattr --absolute-names --only-values \
-                 	  -n ceph.quota.max_bytes $dir || echo 0`
+                 	  -n ceph.quota.max_bytes $dir 2>/dev/null || echo 0`
     echo "$quota"
 }
 
@@ -57,14 +59,16 @@ function quota_set
     local dir="$1"
     local quota="$2"
     local quota_bytes=`numfmt --from=iec $quota`
+    echo "Setting disk quota for $dir to $quota."
     setfattr -n ceph.quota.max_bytes -v "$quota_bytes" "$dir"
 }
 
 if [ $# -eq 0 ]
-then if [ $EUID -eq 0 ]
-     then exit 0
-     elif [ "$PAM_TYPE" = "open_session" ]
-     then homedir=$(getent passwd $PAM_USER | cut -d: -f6)
+then if [ "$PAM_TYPE" = "open_session" ]
+     then if [ "$PAM_USER" = "root" ]
+	  then exit 0
+	  fi
+	  homedir=$(getent passwd $PAM_USER | cut -d: -f6)
 	  if [ `quota_get $homedir` -eq 0 ]
 	  then quota_set "$homedir" "$quota_default"
 	  fi
