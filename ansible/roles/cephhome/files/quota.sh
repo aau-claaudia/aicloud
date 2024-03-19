@@ -38,11 +38,11 @@ function quota_usage
 {
     local dir="$1"
     local usage=`getfattr --absolute-names --only-values \
-			  -n ceph.dir.rbytes $dir 2>/dev/null || echo 0`
-    local usage_text=`numfmt --to=iec-i --suffix=B $usage`
+			  -n ceph.dir.rbytes "$dir" 2>/dev/null || echo 0`
+    local usage_text=`numfmt --to=iec-i --suffix=B "$usage"`
     local quota=`getfattr --absolute-names --only-values \
-                 	  -n ceph.quota.max_bytes $dir 2>/dev/null || echo 0`
-    local quota_text=`numfmt --to=iec-i --suffix=B $quota`
+                 	  -n ceph.quota.max_bytes "$dir" 2>/dev/null || echo 0`
+    local quota_text=`numfmt --to=iec-i --suffix=B "$quota"`
     echo "Disk usage and quota for $dir: $usage_text / $quota_text"   
 }
 
@@ -50,7 +50,7 @@ function quota_get
 {
     local dir="$1"
     local quota=`getfattr --absolute-names --only-values \
-                 	  -n ceph.quota.max_bytes $dir 2>/dev/null || echo 0`
+                 	  -n ceph.quota.max_bytes "$dir" 2>/dev/null || echo 0`
     echo "$quota"
 }
 
@@ -58,7 +58,7 @@ function quota_set
 {
     local dir="$1"
     local quota="$2"
-    local quota_bytes=`numfmt --from=iec $quota`
+    local quota_bytes=`numfmt --from=iec "$quota"`
     echo "Setting disk quota for $dir to $quota."
     setfattr -n ceph.quota.max_bytes -v "$quota_bytes" "$dir"
 }
@@ -68,19 +68,19 @@ then if [ "$PAM_TYPE" = "open_session" ]
      then if [ "$PAM_USER" = "root" ]
 	  then exit 0
 	  fi
-	  homedir=$(getent passwd $PAM_USER | cut -d: -f6)
-	  if [ `quota_get $homedir` -eq 0 ]
+	  homedir=$(getent passwd "$PAM_USER" | cut -d: -f6)
+	  if [ `quota_get "$homedir"` -eq 0 ]
 	  then quota_set "$homedir" "$quota_default"
 	  fi
 	  quota_usage "$homedir"
 	  exit 0
-     else homedir=$(getent passwd $USER | cut -d: -f6)
+     else homedir=$(getent passwd "$USER" | cut -d: -f6)
 	  quota_usage "$homedir"
 	  exit 0
      fi
 elif [ $# -eq 1 -a -d "$1" ]
 then dir="$1"
-     quota_usage $dir
+     quota_usage "$dir"
      exit 0
 elif [ $# -eq 2 -a -d "$1" ]
 then dir="$1"
@@ -94,3 +94,5 @@ then echo "Error: Not a directory: $1"
      echo
 fi
 usage 1
+
+
