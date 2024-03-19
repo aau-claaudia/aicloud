@@ -20,7 +20,7 @@
 - name: add mount
   mount:
     path: /home
-    src: 172.21.232.61:6789,172.21.232.14:6789,172.21.232.15:6789:/ai/{{ inventory_file | basename }}
+    src: 172.21.232.11:6789,172.21.232.12:6789,172.21.232.13:6789,172.21.232.14:6789,172.21.232.15:6789:/ai/{{ inventory_file | basename }}
     fstype: ceph
     opts: "name={{ user }},secretfile=/etc/ceph/client.ai.secret"
     state: present
