@@ -9,6 +9,13 @@ a256-t4-02.srv.aau.dk    is_compute=true|bool gpu_type=t4    slurm_weight=10 ans
 a256-t4-03.srv.aau.dk    is_compute=true|bool gpu_type=t4    slurm_weight=10 ansible_become=yes ansible_host=172.21.212.132
 a256-t4-04.srv.aau.dk    is_compute=true|bool gpu_type=t4    slurm_weight=10 ansible_become=yes ansible_host=172.21.212.133
 
+a512-l4-06.srv.aau.dk    is_compute=true|bool gpu_type=l4    slurm_weight=25 ansible_become=yes ansible_host=172.19.20.103
+
+a512-mi100-01.srv.aau.dk is_compute=true|bool gpu_type=mi100 slurm_weight=99 ansible_become=yes ansible_host=172.19.20.96
+
+a768-l40-01.srv.aau.dk   is_compute=true|bool gpu_type=l40   slurm_weight=60 ansible_become=yes ansible_host=172.19.20.101
+a768-l40-02.srv.aau.dk   is_compute=true|bool gpu_type=l40   slurm_weight=60 ansible_become=yes ansible_host=172.19.20.102
+
 i256-a10-06.srv.aau.dk   is_compute=true|bool gpu_type=a10   slurm_weight=20 ansible_become=yes ansible_host=172.21.212.172
 i256-a10-07.srv.aau.dk   is_compute=true|bool gpu_type=a10   slurm_weight=20 ansible_become=yes ansible_host=172.21.212.173
 i256-a10-08.srv.aau.dk   is_compute=true|bool gpu_type=a10   slurm_weight=20 ansible_become=yes ansible_host=172.21.212.174
@@ -17,11 +24,6 @@ i256-a10-10.srv.aau.dk   is_compute=true|bool gpu_type=a10   slurm_weight=20 ans
 
 i256-a40-01.srv.aau.dk   is_compute=true|bool gpu_type=a40   slurm_weight=30 ansible_become=yes ansible_host=172.19.20.94
 i256-a40-02.srv.aau.dk   is_compute=true|bool gpu_type=a40   slurm_weight=30 ansible_become=yes ansible_host=172.19.20.95
-
-i768-l40-01.srv.aau.dk   is_compute=true|bool gpu_type=l40   slurm_weight=60 ansible_become=yes ansible_host=172.19.20.101
-i768-l40-02.srv.aau.dk   is_compute=true|bool gpu_type=l40   slurm_weight=60 ansible_become=yes ansible_host=172.19.20.102
-
-a512-mi100-01.srv.aau.dk is_compute=true|bool gpu_type=mi100 slurm_weight=99 ansible_become=yes ansible_host=172.19.20.96
 
 nv-ai-01.srv.aau.dk      is_compute=true|bool gpu_type=v100  slurm_weight=40 ansible_become=yes ansible_host=172.19.20.98
 nv-ai-02.srv.aau.dk      is_compute=true|bool gpu_type=v100  slurm_weight=40 ansible_become=yes ansible_host=172.19.20.99
