@@ -13,8 +13,12 @@ a512-l4-06.srv.aau.dk    is_compute=true|bool gpu_type=l4    slurm_weight=25 ans
 
 a512-mi100-01.srv.aau.dk is_compute=true|bool gpu_type=mi100 slurm_weight=99 ansible_become=yes ansible_host=172.19.20.96
 
-a768-l40-01.srv.aau.dk   is_compute=true|bool gpu_type=l40   slurm_weight=60 ansible_become=yes ansible_host=172.19.20.101
-a768-l40-02.srv.aau.dk   is_compute=true|bool gpu_type=l40   slurm_weight=60 ansible_become=yes ansible_host=172.19.20.102
+a768-l40s-01.srv.aau.dk  is_compute=true|bool gpu_type=l40s  slurm_weight=60 ansible_become=yes ansible_host=172.19.20.50
+a768-l40s-02.srv.aau.dk  is_compute=true|bool gpu_type=l40s  slurm_weight=60 ansible_become=yes ansible_host=172.19.20.51
+a768-l40s-03.srv.aau.dk  is_compute=true|bool gpu_type=l40s  slurm_weight=60 ansible_become=yes ansible_host=172.19.20.52
+a768-l40s-04.srv.aau.dk  is_compute=true|bool gpu_type=l40s  slurm_weight=60 ansible_become=yes ansible_host=172.19.20.53
+a768-l40s-05.srv.aau.dk  is_compute=true|bool gpu_type=l40s  slurm_weight=60 ansible_become=yes ansible_host=172.19.20.101
+a768-l40s-06.srv.aau.dk  is_compute=true|bool gpu_type=l40s  slurm_weight=60 ansible_become=yes ansible_host=172.19.20.102
 
 i256-a10-06.srv.aau.dk   is_compute=true|bool gpu_type=a10   slurm_weight=20 ansible_become=yes ansible_host=172.21.212.172
 i256-a10-07.srv.aau.dk   is_compute=true|bool gpu_type=a10   slurm_weight=20 ansible_become=yes ansible_host=172.21.212.173
@@ -31,7 +35,7 @@ nv-ai-03.srv.aau.dk      is_compute=true|bool gpu_type=v100  slurm_weight=40 ans
 nv-ai-04.srv.aau.dk      is_compute=true|bool gpu_type=a100  slurm_weight=50 ansible_become=yes ansible_host=172.19.20.97
 
 [slurm-master]
-ai-fe02.srv.aau.dk       is_controller=true|bool ansible_become=yes ansible_host=172.19.8.30
+ai-fe02.srv.aau.dk       is_controller=true|bool                             ansible_become=yes ansible_host=172.19.8.30
 
 [slurm-cluster:children]
 slurm-master
