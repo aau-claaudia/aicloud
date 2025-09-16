@@ -29,7 +29,7 @@ i256-a10-10.srv.aau.dk   is_compute=true|bool gpu_type=a10   slurm_weight=20 ans
 i256-a40-01.srv.aau.dk   is_compute=true|bool gpu_type=a40   slurm_weight=30 ansible_become=yes ansible_host=172.19.20.94
 i256-a40-02.srv.aau.dk   is_compute=true|bool gpu_type=a40   slurm_weight=30 ansible_become=yes ansible_host=172.19.20.95
 
-nv-ai-01.srv.aau.dk      is_compute=true|bool gpu_type=v100  slurm_weight=40 ansible_become=yes ansible_host=172.19.20.98
+#nv-ai-01.srv.aau.dk      is_compute=true|bool gpu_type=v100  slurm_weight=40 ansible_become=yes ansible_host=172.19.20.98
 nv-ai-02.srv.aau.dk      is_compute=true|bool gpu_type=v100  slurm_weight=40 ansible_become=yes ansible_host=172.19.20.99
 nv-ai-03.srv.aau.dk      is_compute=true|bool gpu_type=v100  slurm_weight=40 ansible_become=yes ansible_host=172.19.20.100
 nv-ai-04.srv.aau.dk      is_compute=true|bool gpu_type=a100  slurm_weight=50 ansible_become=yes ansible_host=172.19.20.97
