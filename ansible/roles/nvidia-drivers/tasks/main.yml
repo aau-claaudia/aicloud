@@ -6,6 +6,7 @@
     state: present
     force_apt_get: true
     pkg:
+      - nvidia-fabricmanager-570
       - nvidia-headless-570
       - nvidia-utils-570
   register: driver
