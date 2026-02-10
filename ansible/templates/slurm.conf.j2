@@ -111,8 +111,9 @@ SelectTypeParameters=CR_Core_Memory,CR_CORE_DEFAULT_DIST_BLOCK,CR_ONE_TASK_PER_C
 #PriorityWeightJobSize=1000
 #PriorityMaxAge=1-0
 
-PreemptMode=REQUEUE
-PreemptType=preempt/partition_prio
+# ===== QOS ======
+PreemptMode=requeue
+PreemptType=preempt/qos
 
 # LOGGING
 SlurmctldDebug=3
@@ -126,13 +127,15 @@ JobCompType=jobcomp/none
 JobAcctGatherType=jobacct_gather/cgroup
 #JobAcctGatherFrequency=30
 {% if slurm_manage_gpus %}
+# Enforce GPU accounting in Slurm
 AccountingStorageTRES=gres/gpu
 {% endif %}
 #DebugFlags=CPU_Bind,gres
 AccountingStorageType=accounting_storage/slurmdbd
 AccountingStorageHost={{ groups["slurm-master"][0] }}
 #AccountingStorageLoc=
-#AccountingStorageEnforce=associations,limits,qos
+# Enforce resource limitations
+AccountingStorageEnforce=associations,limits,qos
 AccountingStorageUser={{ slurm_db_username }}
 AccountingStoragePass=/var/run/munge/munge.socket.2
 
