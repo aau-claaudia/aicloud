@@ -6,9 +6,9 @@
     state: present
     force_apt_get: true
     pkg:
-      - nvidia-fabricmanager-570
-      - nvidia-headless-570
-      - nvidia-utils-570
+      - nvidia-fabricmanager-580
+      - nvidia-headless-580
+      - nvidia-utils-580
   register: driver
 
 - name: reboot the machine when drivers changed
